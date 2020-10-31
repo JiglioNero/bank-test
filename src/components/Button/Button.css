@@ -1,0 +1,23 @@
+.button {
+    border-radius: 10px;
+    color: #EBF0FF;
+    background-color: #4071EE;
+    margin: 0 10px;
+    padding: 0 10px;
+}
+.button_type_edit {
+    color: #4071EE;
+    background-color: #EBF0FF;
+    width: auto;
+}
+.button_type_edit:hover {
+    color: #EBF0FF;
+    background-color: #4071EE;
+}
+.button_size_s {
+    height: 32px;
+}
+.button_size_m {
+    height: 40px;
+    width: 100px;
+}

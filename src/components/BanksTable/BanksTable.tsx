@@ -1,14 +1,19 @@
 import React from "react";
 import Bank from "../../entity/Bank";
+import Button from "../Button/Button";
+import BankModal from "../BankModal/BankModal";
 
 interface IBanksTableProps {
 	banks: Bank[];
 	filter?: (item: Bank) => boolean;
+	onBankEdit: (item: Bank) => void;
 }
 
 interface IBanksTableState {
 	displayedBanks: Bank[];
 	selectedBanksIds: string[];
+	isEditDialogOpen: boolean;
+	bankForEdit?: Bank;
 }
 
 export default class BanksTable extends React.Component<IBanksTableProps, IBanksTableState> {
@@ -18,7 +23,8 @@ export default class BanksTable extends React.Component<IBanksTableProps, IBanks
 
 	    this.state = {
             selectedBanksIds: [],
-	        displayedBanks: props.filter ? props.banks.filter(props.filter) : props.banks
+	        displayedBanks: props.filter ? props.banks.filter(props.filter) : props.banks,
+            isEditDialogOpen: false
 	    };
     }
 
@@ -60,9 +66,23 @@ export default class BanksTable extends React.Component<IBanksTableProps, IBanks
 	    }
 	};
 
+	private onSubmitBankChanges = (bank: Bank) => {
+	    this.props.onBankEdit(bank);
+	    this.setState({
+	        isEditDialogOpen: false,
+	        displayedBanks: this.state.displayedBanks,
+	    });
+	};
+
+	private onCancelBankChanges = (bank?: Bank) => {
+	    this.setState({
+	        isEditDialogOpen: false
+	    });
+	};
+
 	private renderBankRow = (item: Bank) => {
 	    return (
-	        <tr>
+	        <tr key={item.id}>
 	            <td>
 	                <input
 	                    checked={this.state.selectedBanksIds.indexOf(item.id) !== -1}
@@ -75,7 +95,12 @@ export default class BanksTable extends React.Component<IBanksTableProps, IBanks
 	            <td>{item.correspondentAccount}</td>
 	            <td>{item.address}</td>
 	            <td>
-	                <button type="button"><img alt="Edit"/></button>
+	                <Button type='edit' text='Edit' size='s' onClick={() => {
+	                	this.setState({
+	                        isEditDialogOpen: true,
+	                        bankForEdit: item
+	                    });
+	                }}/>
 	            </td>
 	        </tr>
 	    );
@@ -83,23 +108,32 @@ export default class BanksTable extends React.Component<IBanksTableProps, IBanks
 
 	render() {
 	    return (
-	        <table>
-	            <caption>Банки</caption>
-	            <tr>
-	                <td>
-	                    <input
-	                        checked={this.state.selectedBanksIds.length === this.state.displayedBanks.length}
-	                        type="checkbox"
-	                        onChange={this.onAllBanksSelect}
-	                    />
-	                </td>
-	                <th>Имя</th>
-	                <th>БИК</th>
-	                <th>Корреспондентский счет</th>
-	                <th>Адрес</th>
-	            </tr>
-	            {this.state.displayedBanks.map((bank) => this.renderBankRow(bank))}
-	        </table>
+	    	<div>
+	            <table width="100%" cellSpacing="0" cellPadding="4">
+	                <caption>Банки</caption>
+	                <tr>
+	                    <td>
+	                        <input
+	                            checked={this.state.selectedBanksIds.length === this.state.displayedBanks.length}
+	                            type="checkbox"
+	                            onChange={this.onAllBanksSelect}
+	                        />
+	                    </td>
+	                    <th>Имя</th>
+	                    <th>БИК</th>
+	                    <th>Корреспондентский счет</th>
+	                    <th>Адрес</th>
+	                    <th />
+	                </tr>
+	                {this.state.displayedBanks.map((bank) => this.renderBankRow(bank))}
+	            </table>
+	            <BankModal
+	                isOpen={this.state.isEditDialogOpen}
+	                bank={this.state.bankForEdit}
+	                onSubmit={this.onSubmitBankChanges}
+	                onReset={this.onCancelBankChanges}
+	            />
+	        </div>
 	    );
 	}
 }

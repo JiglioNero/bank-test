@@ -35,6 +35,7 @@ export default class Bank {
     }
 
     public static parseFromJson(json: any): Bank {
+        console.log(json);
         return new Bank(json._id, json._name, json._correspondentAccount, json._address);
     }
 }

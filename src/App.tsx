@@ -4,9 +4,11 @@ import BanksTable from "./components/BanksTable/BanksTable";
 import Bank from "./entity/Bank";
 import Search from "./components/Search/Search";
 import Button from "./components/Button/Button";
+import BankModal from "./components/BankModal/BankModal";
 
 interface IAppState {
     banks: Bank[];
+    modalIsOpen: boolean;
     filter?: (item: Bank) => boolean;
 }
 
@@ -15,20 +17,17 @@ class App extends React.Component<any, IAppState>{
 
     constructor(props: any) {
         super(props);
+        const banksRaw = localStorage.getItem("banks");
+        let banks: Bank[] = [];
+        if (banksRaw) {
+            banks = JSON.parse(banksRaw).map((item: any) => Bank.parseFromJson(item));
+        } else {
+            localStorage.setItem("banks", "[]");
+        }
         this.state = {
-            banks: [
-                new Bank("id", "name", "account", "addrsss"),
-                new Bank("id1", "name2", "account3", "addrsss")
-            ],
+            banks,
+            modalIsOpen: false,
         };
-    }
-
-    componentDidMount(): void {
-        // const banksRaw = localStorage.getItem("banks");
-        // if (banksRaw) {
-        //     const banks = Array.of(JSON.parse(banksRaw)).map((item) => Bank.parseFromJson(item));
-        //     this.setState({banks});
-        // }
     }
 
     private onFilterChangeCallback = (filter: string) => {
@@ -41,7 +40,29 @@ class App extends React.Component<any, IAppState>{
     };
 
     private onAddBankClick = () => {
+        this.setState({modalIsOpen: true});
+    };
 
+    private onCancelAddingBank = (bank?: Bank) => {
+        this.setState({modalIsOpen: false});
+    };
+
+    private onAddBank = (bank: Bank) => {
+        if (!this.state.banks.find((item) => item.id === bank.id)) {
+            this.state.banks.push(bank);
+            console.log(JSON.stringify(this.state.banks));
+            localStorage.setItem("banks", JSON.stringify(this.state.banks));
+            this.setState({
+                modalIsOpen: false,
+            });
+        }
+        else {
+            alert("Банк с данным идентификационным номером уже существует.");
+        }
+    };
+
+    private onEditBank = (bank: Bank) => {
+        localStorage.setItem("banks", JSON.stringify(this.state.banks));
     };
 
     private onDeleteBank = () => {
@@ -58,20 +79,28 @@ class App extends React.Component<any, IAppState>{
         return (
             <div>
                 <header>
-                    <h1>Банки</h1>
+                    <h1>Справочник банков</h1>
                 </header>
                 <div>
                     <div>
-                        <Search onFilterChangeCallback={this.onFilterChangeCallback}/>
+                        <div>
+                            <Search onFilterChangeCallback={this.onFilterChangeCallback}/>
+                        </div>
+                        <div>
+                            <Button text={"Добавить"} type={"add"} size={"m"} onClick={this.onAddBankClick}/>
+                            <Button text={"Удалить"} type={"remove"}  size={"m"} onClick={this.onDeleteBank}/>
+                        </div>
                     </div>
                     <div>
-                        <Button text={"Добавить"} type={"add"} onClick={this.onAddBankClick}/>
-                        <Button text={"Удалить"} type={"remove"} onClick={this.onDeleteBank}/>
-                    </div>
-                    <div>
-                        <BanksTable ref={this.banksTable} banks={this.state.banks} filter={this.state.filter} />
+                        <BanksTable
+                            ref={this.banksTable}
+                            banks={this.state.banks}
+                            filter={this.state.filter}
+                            onBankEdit={this.onEditBank}
+                        />
                     </div>
                 </div>
+                <BankModal isOpen={this.state.modalIsOpen} onSubmit={this.onAddBank} onReset={this.onCancelAddingBank}/>
             </div>
         );
     }
