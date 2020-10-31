@@ -73,42 +73,54 @@ export default class BankModal extends React.Component<IBankModalProps, IBankMod
 	    return (
 	        <Modal isOpen={this.props.isOpen}>
 	            <form method="dialog">
-	                <label htmlFor="id">БИК:</label>
-	                <input
-	                    name="id"
-	                    type="text"
-	                    disabled={!!this.props.bank}
-	                    value={this.state.id}
-	                    onChange={(event) => {
-	                    	const newId = event.target.value;
-	                    	const submitIsAvailable = !!newId;
-	                    	this.setState({
-	                            id: newId,
-	                            submitIsAvailable
-	                    	});
-	                    }}
-	                />
-	                <label htmlFor="name">Название банка:</label>
-	                <input
-	                    name="name"
-	                    type="text"
-	                    value={this.state.name}
-	                    onChange={(event) => this.setState({name: event.target.value})}
-	                />
-	                <label htmlFor="account">Корреспондентский счет:</label>
-	                <input
-	                    name="account" type="text"
-	                    value={this.state.correspondentAccount}
-	                    onChange={(event) => this.setState({correspondentAccount: event.target.value})}
-	                />
-	                <label htmlFor="address">Адрес:</label>
-	                <input
-	                    name="address" type="text"
-	                    value={this.state.address}
-	                    onChange={(event) => this.setState({address: event.target.value})}
-	                />
-	                <button type="submit" disabled={!this.state.submitIsAvailable} onClick={this.onSubmit}>Ок</button>
-	                <button type="reset" onClick={this.onReset}>Отмена</button>
+	                <div className="dialog_field">
+	                    <label htmlFor="id">БИК:</label>
+	                    <input
+	                        className="input"
+	                        name="id"
+	                        type="text"
+	                        disabled={!!this.props.bank}
+	                        value={this.state.id}
+	                        onChange={(event) => {
+	                            const newId = event.target.value;
+	                            const submitIsAvailable = !!newId;
+	                            this.setState({
+	                                id: newId,
+	                                submitIsAvailable
+	                            });
+	                        }}
+	                    />
+	                </div>
+	                <div className="dialog_field">
+	                    <label htmlFor="name">Название банка:</label>
+	                    <input
+	                        className="input"
+	                        name="name"
+	                        type="text"
+	                        value={this.state.name}
+	                        onChange={(event) => this.setState({name: event.target.value})}
+	                    />
+	                </div>
+	                <div className="dialog_field">
+	                    <label htmlFor="account">Корреспондентский счет:</label>
+	                    <input
+	                        className="input"
+	                        name="account" type="text"
+	                        value={this.state.correspondentAccount}
+	                        onChange={(event) => this.setState({correspondentAccount: event.target.value})}
+	                    />
+	                </div>
+	                <div className="dialog_field">
+	                    <label htmlFor="address">Адрес:</label>
+	                    <input
+	                        className="input"
+	                        name="address" type="text"
+	                        value={this.state.address}
+	                        onChange={(event) => this.setState({address: event.target.value})}
+	                    />
+	                </div>
+	                <button className="button button_size_m" type="submit" disabled={!this.state.submitIsAvailable} onClick={this.onSubmit}>Ок</button>
+	                <button className="button button_size_m" type="reset" onClick={this.onReset}>Отмена</button>
 	            </form>
 	        </Modal>
 	    );

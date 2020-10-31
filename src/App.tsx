@@ -77,29 +77,25 @@ class App extends React.Component<any, IAppState>{
 
     render() {
         return (
-            <div>
-                <header>
+            <div className="">
+                <header className="header_container">
                     <h1>Справочник банков</h1>
-                </header>
-                <div>
-                    <div>
-                        <div>
+                    <div className="navigation_container">
+                        <div className="navigation_item">
                             <Search onFilterChangeCallback={this.onFilterChangeCallback}/>
                         </div>
-                        <div>
+                        <div className="navigation_item">
                             <Button text={"Добавить"} type={"add"} size={"m"} onClick={this.onAddBankClick}/>
                             <Button text={"Удалить"} type={"remove"}  size={"m"} onClick={this.onDeleteBank}/>
                         </div>
                     </div>
-                    <div>
-                        <BanksTable
-                            ref={this.banksTable}
-                            banks={this.state.banks}
-                            filter={this.state.filter}
-                            onBankEdit={this.onEditBank}
-                        />
-                    </div>
-                </div>
+                </header>
+                <BanksTable
+                    ref={this.banksTable}
+                    banks={this.state.banks}
+                    filter={this.state.filter}
+                    onBankEdit={this.onEditBank}
+                />
                 <BankModal isOpen={this.state.modalIsOpen} onSubmit={this.onAddBank} onReset={this.onCancelAddingBank}/>
             </div>
         );

@@ -1,8 +1,22 @@
 dialog {
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
     z-index: 2;
+    max-width: 50%;
+    max-height: 50%;
+    padding: 20px 40px;
+    color: #4071EE;
+    border-radius: 20px;
+}
+
+.dialog_field {
+    flex-direction: column;
+    display: flex;
+    margin: 20px 0;
 }

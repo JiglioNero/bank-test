@@ -56,3 +56,29 @@ input
   border: 0;
   border: none;
 }
+header {
+  font-family: 'Roboto', sans-serif;
+  color: #3D424B;
+}
+
+.header_container {
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.navigation_container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.navigation_item {
+  flex: 1;
+  display: flex;
+  margin: 10px;
+}

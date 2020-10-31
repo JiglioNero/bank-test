@@ -2,6 +2,7 @@ import React from "react";
 import Bank from "../../entity/Bank";
 import Button from "../Button/Button";
 import BankModal from "../BankModal/BankModal";
+import "./BanksTable.css";
 
 interface IBanksTableProps {
 	banks: Bank[];
@@ -108,7 +109,7 @@ export default class BanksTable extends React.Component<IBanksTableProps, IBanks
 
 	render() {
 	    return (
-	    	<div>
+	    	<div className="container">
 	            <table width="100%" cellSpacing="0" cellPadding="4">
 	                <caption>Банки</caption>
 	                <tr>
